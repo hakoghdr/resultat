@@ -5,429 +5,339 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>استظهار المعدلات السنوية</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Arial', sans-serif;
+            font-family: 'Poppins', sans-serif;
         }
 
         body {
             min-height: 100vh;
-            overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
             position: relative;
-            transition: all 0.5s ease;
-        }
-
-        body.light {
-            background: linear-gradient(135deg, #ff1e56, #00ddeb, #ffaa00);
+            transition: background 0.7s ease;
+            overflow-x: hidden;
+            background: linear-gradient(135deg, #ff5e78, #00c4cc, #ffdd57);
         }
 
         body.dark {
-            background: linear-gradient(135deg, #0d1b2a, #1b263b, #415a77);
+            background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
         }
 
-        .background-shapes {
+        /* خلفية ديناميكية */
+        .background-grid {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            overflow: hidden;
             z-index: -1;
+            overflow: hidden;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1), transparent);
         }
 
-        .particle {
+        .grid-lines {
             position: absolute;
-            background: radial-gradient(circle, rgba(255, 255, 255, 0.5), transparent);
-            border-radius: 50%;
-            box-shadow: 0 0 25px rgba(255, 255, 255, 0.7);
-            animation: particleFloat 8s infinite ease-in-out;
-        }
-
-        .particle:nth-child(1) { width: 50px; height: 50px; top: 15%; left: 10%; animation-delay: 0s; }
-        .particle:nth-child(2) { width: 80px; height: 80px; top: 60%; right: 20%; animation-delay: 1s; }
-        .particle:nth-child(3) { width: 60px; height: 60px; bottom: 10%; left: 40%; animation-delay: 2s; }
-        .particle:nth-child(4) { width: 70px; height: 70px; top: 30%; right: 30%; animation-delay: 3s; }
-        .particle:nth-child(5) { width: 90px; height: 90px; bottom: 20%; left: 60%; animation-delay: 4s; }
-
-        @keyframes particleFloat {
-            0%, 100% { transform: translateY(0) scale(1); opacity: 0.6; }
-            50% { transform: translateY(-60px) scale(1.2); opacity: 1; }
-        }
-
-        .glow-line {
-            position: absolute;
-            background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.5), transparent);
-            height: 2px;
             width: 100%;
-            animation: glowLine 5s infinite ease-in-out;
+            height: 100%;
+            background: repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.05) 0, rgba(255, 255, 255, 0.05) 1px, transparent 1px, transparent 40px),
+                        repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.05) 0, rgba(255, 255, 255, 0.05) 1px, transparent 1px, transparent 40px);
+            animation: gridMove 20s infinite linear;
         }
 
-        .glow-line:nth-child(6) { top: 20%; }
-        .glow-line:nth-child(7) { top: 50%; animation-delay: 2s; }
-        .glow-line:nth-child(8) { top: 80%; animation-delay: 4s; }
-
-        @keyframes glowLine {
-            0%, 100% { transform: translateX(-100%); opacity: 0.3; }
-            50% { transform: translateX(100%); opacity: 0.8; }
+        @keyframes gridMove {
+            0% { transform: translate(-10px, -10px); }
+            50% { transform: translate(10px, 10px); }
+            100% { transform: translate(-10px, -10px); }
         }
 
-        .splash-screen {
-            width: 95%;
-            max-width: 1100px;
-            padding: 80px;
-            text-align: center;
-            border-radius: 40px;
-            transition: all 0.5s ease;
-            animation: pulseGlow 2s infinite ease-in-out;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(20px);
-            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.3), inset 0 0 20px rgba(255, 255, 255, 0.2);
-            border: 3px solid rgba(255, 255, 255, 0.4);
-            position: relative;
-            overflow: hidden;
-        }
-
-        body.dark .splash-screen {
-            background: rgba(13, 27, 42, 0.15);
-            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(255, 255, 255, 0.1);
-        }
-
-        .splash-screen::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255, 255, 255, 0.2), transparent);
-            animation: rotateGlow 10s infinite linear;
-        }
-
-        @keyframes rotateGlow {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        @keyframes pulseGlow {
-            0%, 100% { box-shadow: 0 25px 80px rgba(0, 0, 0, 0.3), inset 0 0 20px rgba(255, 255, 255, 0.2); }
-            50% { box-shadow: 0 25px 100px rgba(0, 0, 0, 0.5), inset 0 0 30px rgba(255, 255, 255, 0.4); }
-        }
-
-        .splash-screen h1 {
-            font-size: 4em;
-            margin-bottom: 40px;
-            text-shadow: 0 5px 20px rgba(0, 0, 0, 0.6), 0 0 10px rgba(255, 255, 255, 0.8);
-            background: linear-gradient(45deg, #ff1e56, #00ddeb);
-            -webkit-background-clip: text;
-            color: transparent;
-            animation: textGlow 3s infinite ease-in-out;
-        }
-
-        body.dark .splash-screen h1 {
-            background: linear-gradient(45deg, #778da9, #415a77);
-            -webkit-background-clip: text;
-        }
-
-        @keyframes textGlow {
-            0%, 100% { text-shadow: 0 5px 20px rgba(0, 0, 0, 0.6), 0 0 10px rgba(255, 255, 255, 0.8); }
-            50% { text-shadow: 0 5px 30px rgba(0, 219, 235, 0.9), 0 0 15px rgba(255, 255, 255, 1); }
-        }
-
-        .splash-screen p {
-            font-size: 2em;
-            margin-bottom: 50px;
-            color: #fff;
-            text-shadow: 0 3px 15px rgba(0, 0, 0, 0.5), 0 0 5px rgba(255, 255, 255, 0.7);
-        }
-
-        .mode-toggle {
+        /* مؤشر مخصص (للحواسيب فقط) */
+        .cursor {
             position: fixed;
-            top: personalpx;
-            right: 30px;
-            background: linear-gradient(45deg, #ff1e56, #00ddeb);
-            border: 2px solid rgba(255, 255, 255, 0.5);
-            padding: 20px;
+            width: 20px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.8);
             border-radius: 50%;
-            cursor: pointer;
-            box-shadow: 0 10px 30px rgba(0, 219, 235, 0.6);
-            z-index: 10;
-            transition: all 0.4s ease;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.1s ease, background 0.3s ease;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
         }
 
-        .mode-toggle:hover {
-            transform: scale(1.3) rotate(360deg);
-            box-shadow: 0 15px 40px rgba(0, 219, 235, 0.9);
+        .cursor.hover {
+            transform: scale(1.5);
+            background: rgba(0, 196, 204, 0.8);
         }
 
-        body.dark .mode-toggle {
-            background: linear-gradient(45deg, #778da9, #415a77);
-            box-shadow: 0 10px 30px rgba(119, 141, 169, 0.6);
-        }
-
-        .container {
-            border-radius: 40px;
-            padding: 80px;
-            width: 95%;
-            max-width: 1100px;
+        /* الواجهات */
+        .screen {
+            width: 90%;
+            max-width: 1200px;
+            padding: clamp(40px, 5vw, 70px);
             text-align: center;
-            transition: all 0.5s ease;
-            animation: pulseGlow 2s infinite ease-in-out;
+            border-radius: 30px;
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(20px);
-            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.3), inset 0 0 20px rgba(255, 255, 255, 0.2);
-            border: 3px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25), inset 0 0 15px rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             position: relative;
-            overflow: hidden;
+            opacity: 0;
+            transform: scale(0.95);
+            transition: opacity 0.4s ease, transform 0.4s ease;
         }
 
-        body.dark .container {
-            background: rgba(13, 27, 42, 0.15);
-            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(255, 255, 255, 0.1);
+        .screen.active {
+            opacity: 1;
+            transform: scale(1);
         }
 
-        .container::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255, 255, 255, 0.2), transparent);
-            animation: rotateGlow 10s infinite linear;
+        body.dark .screen {
+            background: rgba(26, 26, 46, 0.15);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), inset 0 0 15px rgba(15, 52, 96, 0.2);
         }
 
+        /* العناوين */
         h1 {
-            font-size: 4em;
-            margin-bottom: 40px;
-            text-shadow: 0 5px 20px rgba(0, 0, 0, 0.6), 0 0 10px rgba(255, 255, 255, 0.8);
-            background: linear-gradient(45deg, #ff1e56, #00ddeb);
-            -webkit-background-clip: text;
-            color: transparent;
-            animation: textGlow 3s infinite ease-in-out;
+            font-size: clamp(2em, 6vw, 4em);
+            font-weight: 700;
+            color: #fff;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+            margin-bottom: clamp(20px, 3vw, 35px);
         }
 
         body.dark h1 {
-            background: linear-gradient(45deg, #778da9, #415a77);
-            -webkit-background-clip: text;
+            color: #e0e0e0;
+            text-shadow: 0 0 15px rgba(15, 52, 96, 0.7);
         }
 
         p {
-            font-size: 2em;
-            margin-bottom: 50px;
+            font-size: clamp(1.2em, 3vw, 1.9em);
+            font-weight: 300;
             color: #fff;
-            text-shadow: 0 3px 15px rgba(0, 0, 0, 0.5), 0 0 5px rgba(255, 255, 255, 0.7);
+            margin-bottom: clamp(25px, 4vw, 45px);
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
         }
 
+        body.dark p {
+            color: #d0d0d0;
+        }
+
+        /* زر تبديل الوضع */
+        .mode-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(45deg, #ff5e78, #00c4cc);
+            border: none;
+            padding: clamp(12px, 2vw, 18px);
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            z-index: 1000;
+        }
+
+        .mode-toggle:hover {
+            transform: rotate(90deg) scale(1.2);
+            box-shadow: 0 12px 30px rgba(0, 196, 204, 0.6);
+        }
+
+        body.dark .mode-toggle {
+            background: linear-gradient(45deg, #0f3460, #e94560);
+        }
+
+        /* حقل الإدخال */
         .input-group {
             position: relative;
-            margin-bottom: 60px;
+            margin-bottom: clamp(30px, 5vw, 60px);
         }
 
         input[type="text"] {
             width: 100%;
-            padding: 25px;
-            font-size: 1.8em;
-            border: none;
-            border-radius: 20px;
-            outline: none;
-            transition: all 0.4s ease;
-            background: rgba(255, 255, 255, 0.15);
-            color: #fff;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            padding: clamp(15px, 2.5vw, 25px);
+            font-size: clamp(1.2em, 2.5vw, 1.8em);
+            font-weight: 300;
             border: 2px solid rgba(255, 255, 255, 0.3);
-            text-shadow: 0 1px 5px rgba(0, 0, 0, 0.5);
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+            outline: none;
+            transition: border-color 0.4s ease, box-shadow 0.4s ease, transform 0.4s ease;
         }
 
         input[type="text"]::placeholder {
             color: rgba(255, 255, 255, 0.6);
-            text-shadow: 0 1px 5px rgba(0, 0, 0, 0.5);
         }
 
         input[type="text"]:focus {
-            box-shadow: 0 0 40px rgba(0, 219, 235, 0.9);
-            background: rgba(255, 255, 255, 0.25);
-            border-color: #00ddeb;
+            border-color: #00c4cc;
+            box-shadow: 0 0 20px rgba(0, 196, 204, 0.6);
+            transform: scale(1.01);
         }
 
+        /* رسالة الخطأ */
         .error-message {
             display: none;
-            font-size: 1.6em;
-            color: #ff1e56;
-            background: rgba(255, 30, 86, 0.2);
-            padding: 20px 30px;
-            border-radius: 20px;
-            margin-top: 25px;
+            font-size: clamp(1em, 2vw, 1.6em);
+            font-weight: 500;
+            color: #ff5e78;
+            background: rgba(255, 94, 120, 0.2);
+            padding: clamp(15px, 2vw, 20px) clamp(20px, 3vw, 30px);
+            border-radius: 15px;
+            margin-top: clamp(15px, 2vw, 25px);
+            box-shadow: 0 8px 25px rgba(255, 94, 120, 0.4);
             animation: shake 0.5s ease-in-out;
-            box-shadow: 0 10px 30px rgba(255, 30, 86, 0.5);
-            border: 2px solid rgba(255, 30, 86, 0.5);
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
         }
 
         @keyframes shake {
             0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-15px); }
-            75% { transform: translateX(15px); }
+            25% { transform: translateX(-8px); }
+            75% { transform: translateX(8px); }
         }
 
+        /* الأزرار */
         .btn {
-            padding: 25px 70px;
-            font-size: 1.8em;
-            border: none;
-            border-radius: 60px;
-            background: linear-gradient(45deg, #ff1e56, #00ddeb);
-            color: white;
+            padding: clamp(15px, 2.5vw, 22px) clamp(40px, 5vw, 70px);
+            font-size: clamp(1.2em, 2.5vw, 1.8em);
+            font-weight: 500;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50px;
+            background: linear-gradient(45deg, #ff5e78, #00c4cc);
+            color: #fff;
             cursor: pointer;
-            transition: all 0.5s ease;
-            box-shadow: 0 15px 40px rgba(0, 219, 235, 0.7);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3), 0 0 15px rgba(0, 196, 204, 0.5);
+            transition: transform 0.4s ease, box-shadow 0.4s ease, background 0.4s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
             position: relative;
             overflow: hidden;
-            margin: 20px;
-            border: 2px solid rgba(255, 255, 255, 0.5);
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
         }
 
         body.dark .btn {
-            background: linear-gradient(45deg, #778da9, #415a77);
-            box-shadow: 0 15px 40px rgba(119, 141, 169, 0.7);
-        }
-
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            background: rgba(255, 255, 255, 0.5);
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            transition: width 0.7s ease, height 0.7s ease;
-        }
-
-        .btn:hover::before {
-            width: 500px;
-            height: 500px;
+            background: linear-gradient(45deg, #0f3460, #e94560);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5), 0 0 15px rgba(233, 69, 96, 0.5);
         }
 
         .btn:hover {
-            transform: translateY(-10px) scale(1.1);
-            box-shadow: 0 20px 50px rgba(0, 219, 235, 1);
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 15px 35px rgba(0, 196, 204, 0.7), 0 0 25px rgba(0, 196, 204, 0.8);
+            background: linear-gradient(45deg, #ff788f, #00d8e0);
         }
 
         body.dark .btn:hover {
-            box-shadow: 0 20px 50px rgba(119, 141, 169, 1);
+            background: linear-gradient(45deg, #1a5ba6, #ff6b85);
+            box-shadow: 0 15px 35px rgba(233, 69, 96, 0.7), 0 0 25px rgba(233, 69, 96, 0.8);
         }
 
+        .btn i {
+            font-size: clamp(1em, 2vw, 1.4em);
+            transition: transform 0.4s ease;
+        }
+
+        .btn:hover i {
+            transform: rotate(15deg);
+        }
+
+        /* زر الرجوع */
         .back-btn {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            padding: 15px 30px;
-            font-size: 1.4em;
-            border: none;
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            padding: clamp(10px, 1.5vw, 15px) clamp(20px, 3vw, 30px);
+            font-size: clamp(1em, 2vw, 1.5em);
+            background: linear-gradient(45deg, #ffdd57, #ff5e78);
             border-radius: 50px;
-            background: linear-gradient(45deg, #ffaa00, #ff1e56);
-            color: white;
+            color: #fff;
             cursor: pointer;
-            transition: all 0.4s ease;
-            box-shadow: 0 10px 30px rgba(255, 170, 0, 0.7);
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            z-index: 1000;
         }
 
         body.dark .back-btn {
-            background: linear-gradient(45deg, #415a77, #778da9);
-            box-shadow: 0 10px 30px rgba(119, 141, 169, 0.7);
+            background: linear-gradient(45deg, #0f3460, #e94560);
         }
 
         .back-btn:hover {
-            transform: translateY(-5px) scale(1.05);
-            box-shadow: 0 15px 40px rgba(255, 170, 0, 1);
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 12px 30px rgba(255, 221, 87, 0.6);
         }
 
         body.dark .back-btn:hover {
-            box-shadow: 0 15px 40px rgba(119, 141, 169, 1);
+            box-shadow: 0 12px 30px rgba(233, 69, 96, 0.6);
         }
 
+        /* واجهة النتائج */
         .results {
-            display: none;
-            padding: 60px;
-            border-radius: 40px;
-            animation: slideIn 0.8s ease-in-out;
-        }
-
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateX(70px); }
-            to { opacity: 1; transform: translateX(0); }
+            background: rgba(255, 255, 255, 0.05);
         }
 
         .results h2 {
-            font-size: 3.5em;
-            color: #ff1e56;
-            margin-bottom: 40px;
-            text-shadow: 0 5px 20px rgba(0, 0, 0, 0.6), 0 0 10px rgba(255, 255, 255, 0.8);
-            animation: textGlow 3s infinite ease-in-out;
+            font-size: clamp(2em, 5vw, 3.5em);
+            font-weight: 700;
+            color: #ff5e78;
+            margin-bottom: clamp(20px, 3vw, 35px);
+            text-shadow: 0 0 15px rgba(255, 94, 120, 0.5);
         }
 
         body.dark .results h2 {
-            color: #778da9;
+            color: #e94560;
+            text-shadow: 0 0 15px rgba(233, 69, 96, 0.5);
         }
 
         .results p {
-            font-size: 2.2em;
-            margin: 25px 0;
+            font-size: clamp(1.2em, 3vw, 2em);
+            font-weight: 300;
+            margin: clamp(15px, 2vw, 25px) 0;
             display: flex;
             align-items: center;
-            gap: 20px;
-            color: #fff;
-            text-shadow: 0 3px 15px rgba(0, 0, 0, 0.5), 0 0 5px rgba(255, 255, 255, 0.7);
+            gap: 15px;
         }
 
         .results .note {
-            font-size: 2.5em;
-            font-weight: bold;
-            color: #00ddeb;
-            text-shadow: 0 3px 15px rgba(0, 0, 0, 0.5), 0 0 5px rgba(0, 219, 235, 0.9);
+            font-size: clamp(1.4em, 3.5vw, 2.2em);
+            font-weight: 500;
+            color: #00c4cc;
+            text-shadow: 0 0 10px rgba(0, 196, 204, 0.5);
         }
 
         .results .fail {
-            color: #ff1e56;
-            text-shadow: 0 3px 15px rgba(0, 0, 0, 0.5), 0 0 5px rgba(255, 30, 86, 0.9);
+            color: #ff5e78;
+            text-shadow: 0 0 10px rgba(255, 94, 120, 0.5);
         }
 
-        @media (max-width: 600px) {
-            .container, .splash-screen {
-                padding: 50px;
-                width: 95%;
-            }
+        /* التصميم المستجيب */
+        @media (max-width: 1024px) {
+            .screen { width: 92%; }
+            .grid-lines { display: none; } /* تعطيل الشبكة على الشاشات المتوسطة */
+        }
 
-            h1 { font-size: 3em; }
-            p, .results p { font-size: 1.5em; }
-            .btn { padding: 20px 50px; font-size: 1.4em; }
-            .back-btn { padding: 10px 20px; font-size: 1.2em; }
-            input[type="text"] { padding: 20px; font-size: 1.4em; }
-            .error-message { font-size: 1.4em; }
+        @media (max-width: 768px) {
+            body { cursor: default; } /* إعادة المؤشر الافتراضي على الأجهزة التي تعمل باللمس */
+            .cursor { display: none; } /* تعطيل المؤشر المخصص */
+            .screen { padding: 30px; }
+            .mode-toggle, .back-btn { top: 10px; }
+        }
+
+        @media (max-width: 480px) {
+            .screen { padding: 20px; }
+            .btn { display: block; margin: 10px auto; }
         }
     </style>
 </head>
 <body class="light">
-    <div class="background-shapes">
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="glow-line"></div>
-        <div class="glow-line"></div>
-        <div class="glow-line"></div>
+    <div class="background-grid">
+        <div class="grid-lines"></div>
     </div>
+    <div class="cursor" id="cursor"></div>
 
-    <div class="splash-screen" id="splash-screen">
+    <div class="screen" id="splash-screen">
         <h1>مرحبًا بكم!</h1>
         <p>نظام استظهار المعدلات السنوية</p>
         <button class="btn" onclick="goToMain()">
@@ -439,7 +349,7 @@
         <i class="fas fa-moon"></i>
     </button>
 
-    <div class="container" id="welcome-screen" style="display: none;">
+    <div class="screen" id="welcome-screen" style="display: none;">
         <button class="back-btn" onclick="backToSplash()">
             <i class="fas fa-arrow-left"></i> الرجوع
         </button>
@@ -454,7 +364,7 @@
         <div class="error-message" id="error-message"></div>
     </div>
 
-    <div class="container results" id="results-screen" style="display: none;">
+    <div class="screen results" id="results-screen" style="display: none;">
         <button class="back-btn" onclick="backToWelcome()">
             <i class="fas fa-arrow-left"></i> الرجوع
         </button>
@@ -499,10 +409,20 @@
             }
         };
 
+        // دالة الانتقال بين الواجهات
+        function toggleScreen(hideId, showId) {
+            const hideScreen = document.getElementById(hideId);
+            const showScreen = document.getElementById(showId);
+            hideScreen.classList.remove("active");
+            setTimeout(() => {
+                hideScreen.style.display = "none";
+                showScreen.style.display = "block";
+                requestAnimationFrame(() => showScreen.classList.add("active"));
+            }, 400);
+        }
+
         function goToMain() {
-            document.getElementById("splash-screen").style.display = "none";
-            document.getElementById("welcome-screen").style.display = "block";
-            document.getElementById("error-message").style.display = "none";
+            toggleScreen("splash-screen", "welcome-screen");
         }
 
         function showResults() {
@@ -524,8 +444,7 @@
                 return;
             }
 
-            document.getElementById("welcome-screen").style.display = "none";
-            document.getElementById("results-screen").style.display = "block";
+            toggleScreen("welcome-screen", "results-screen");
 
             document.getElementById("studentName").textContent = student.name;
             document.getElementById("studentLevel").textContent = student.level;
@@ -535,20 +454,17 @@
         }
 
         function backToHome() {
-            document.getElementById("results-screen").style.display = "none";
-            document.getElementById("welcome-screen").style.display = "block";
+            toggleScreen("results-screen", "welcome-screen");
             document.getElementById("regNumber").value = "";
             document.getElementById("error-message").style.display = "none";
         }
 
         function backToSplash() {
-            document.getElementById("welcome-screen").style.display = "none";
-            document.getElementById("splash-screen").style.display = "block";
+            toggleScreen("welcome-screen", "splash-screen");
         }
 
         function backToWelcome() {
-            document.getElementById("results-screen").style.display = "none";
-            document.getElementById("welcome-screen").style.display = "block";
+            toggleScreen("results-screen", "welcome-screen");
         }
 
         function toggleMode() {
@@ -563,11 +479,27 @@
             const regNumber = document.getElementById("regNumber").value.trim();
             const student = students[regNumber];
             if (student && student.pdfUrl) {
-                // فتح الرابط في نافذة جديدة
                 window.open(student.pdfUrl, '_blank');
             } else {
                 alert("حدث خطأ: لم يتم العثور على رابط PDF لهذا الطالب!");
             }
+        }
+
+        // تهيئة الواجهة الأولى
+        document.getElementById("splash-screen").classList.add("active");
+
+        // تحريك المؤشر المخصص (للحواسيب فقط)
+        if (!('ontouchstart' in window)) {
+            const cursor = document.getElementById("cursor");
+            document.addEventListener("mousemove", (e) => {
+                cursor.style.left = `${e.clientX - 10}px`;
+                cursor.style.top = `${e.clientY - 10}px`;
+            });
+
+            document.querySelectorAll(".btn, .mode-toggle, .back-btn, input").forEach(el => {
+                el.addEventListener("mouseenter", () => cursor.classList.add("hover"));
+                el.addEventListener("mouseleave", () => cursor.classList.remove("hover"));
+            });
         }
     </script>
 </body>
