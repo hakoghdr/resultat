@@ -127,6 +127,51 @@
             color: #d0d0d0;
         }
 
+        /* الأزرار */
+        .btn {
+            padding: clamp(15px, 2.5vw, 22px) clamp(40px, 5vw, 70px);
+            font-size: clamp(1.2em, 2.5vw, 1.8em);
+            font-weight: 500;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50px;
+            background: linear-gradient(45deg, #ff5e78, #00c4cc);
+            color: #fff;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3), 0 0 15px rgba(0, 196, 204, 0.5);
+            transition: transform 0.4s ease, box-shadow 0.4s ease, background 0.4s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            position: relative;
+            overflow: hidden;
+            margin: 10px;
+        }
+
+        body.dark .btn {
+            background: linear-gradient(45deg, #0f3460, #e94560);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5), 0 0 15px rgba(233, 69, 96, 0.5);
+        }
+
+        .btn:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 15px 35px rgba(0, 196, 204, 0.7), 0 0 25px rgba(0, 196, 204, 0.8);
+            background: linear-gradient(45deg, #ff788f, #00d8e0);
+        }
+
+        body.dark .btn:hover {
+            background: linear-gradient(45deg, #1a5ba6, #ff6b85);
+            box-shadow: 0 15px 35px rgba(233, 69, 96, 0.7), 0 0 25px rgba(233, 69, 96, 0.8);
+        }
+
+        .btn i {
+            font-size: clamp(1em, 2vw, 1.4em);
+            transition: transform 0.4s ease;
+        }
+
+        .btn:hover i {
+            transform: rotate(15deg);
+        }
+
         /* زر تبديل الوضع */
         .mode-toggle {
             position: fixed;
@@ -200,50 +245,6 @@
             75% { transform: translateX(8px); }
         }
 
-        /* الأزرار */
-        .btn {
-            padding: clamp(15px, 2.5vw, 22px) clamp(40px, 5vw, 70px);
-            font-size: clamp(1.2em, 2.5vw, 1.8em);
-            font-weight: 500;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50px;
-            background: linear-gradient(45deg, #ff5e78, #00c4cc);
-            color: #fff;
-            cursor: pointer;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3), 0 0 15px rgba(0, 196, 204, 0.5);
-            transition: transform 0.4s ease, box-shadow 0.4s ease, background 0.4s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        body.dark .btn {
-            background: linear-gradient(45deg, #0f3460, #e94560);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5), 0 0 15px rgba(233, 69, 96, 0.5);
-        }
-
-        .btn:hover {
-            transform: translateY(-5px) scale(1.05);
-            box-shadow: 0 15px 35px rgba(0, 196, 204, 0.7), 0 0 25px rgba(0, 196, 204, 0.8);
-            background: linear-gradient(45deg, #ff788f, #00d8e0);
-        }
-
-        body.dark .btn:hover {
-            background: linear-gradient(45deg, #1a5ba6, #ff6b85);
-            box-shadow: 0 15px 35px rgba(233, 69, 96, 0.7), 0 0 25px rgba(233, 69, 96, 0.8);
-        }
-
-        .btn i {
-            font-size: clamp(1em, 2vw, 1.4em);
-            transition: transform 0.4s ease;
-        }
-
-        .btn:hover i {
-            transform: rotate(15deg);
-        }
-
         /* زر الرجوع */
         .back-btn {
             position: fixed;
@@ -315,19 +316,19 @@
         /* التصميم المستجيب */
         @media (max-width: 1024px) {
             .screen { width: 92%; }
-            .grid-lines { display: none; } /* تعطيل الشبكة على الشاشات المتوسطة */
+            .grid-lines { display: none; }
         }
 
         @media (max-width: 768px) {
-            body { cursor: default; } /* إعادة المؤشر الافتراضي على الأجهزة التي تعمل باللمس */
-            .cursor { display: none; } /* تعطيل المؤشر المخصص */
+            body { cursor: default; }
+            .cursor { display: none; }
             .screen { padding: 30px; }
             .mode-toggle, .back-btn { top: 10px; }
         }
 
         @media (max-width: 480px) {
             .screen { padding: 20px; }
-            .btn { display: block; margin: 10px auto; }
+            .btn { display: block; margin: 15px auto; }
         }
     </style>
 </head>
@@ -342,6 +343,9 @@
         <p>نظام استظهار المعدلات السنوية</p>
         <button class="btn" onclick="goToMain()">
             <i class="fas fa-eye"></i> اطلاع
+        </button>
+        <button class="btn" onclick="openVideo()">
+            <i class="fas fa-video"></i> فيديو توضيحي
         </button>
     </div>
 
@@ -405,6 +409,54 @@
                 grade: "14.52/20",
                 note: "ألف مبروك! بالتوفيق للمستوى القادم.",
                 noteClass: "",
+                pdfUrl: "https://drive.google.com/file/d/1YyxAL9VCxPDqeEuLRlJm8lTMNx7F8unp/view"
+            },
+            "12345": {
+                name: "لينا عبد الرحمن",
+                level: "ثانية ثانوي – رياضيات",
+                grade: "12.75/20",
+                note: "ألف مبروك! بالتوفيق للمستوى القادم.",
+                noteClass: "",
+                pdfUrl: "https://drive.google.com/file/d/1DEnVxQHNPknFzunrCAVZVaJEUrLxUiRA/view"
+            },
+            "67890": {
+                name: "ياسر محمود",
+                level: "ثانية ثانوي – علوم تجريبية",
+                grade: "9.15/20",
+                note: "للأسف، لم يتم تحقيق النجاح المطلوب. ستتم إعادة السنة الدراسية.",
+                noteClass: "fail",
+                pdfUrl: "https://drive.google.com/file/d/1ed7H9NbgyXGdlVKM5wOCI9W7AYDrA6SR/view"
+            },
+            "54321": {
+                name: "سارة بنت الهادي",
+                level: "ثانية ثانوي – آداب وفلسفة",
+                grade: "13.40/20",
+                note: "ألف مبروك! بالتوفيق للمستوى القادم.",
+                noteClass: "",
+                pdfUrl: "https://drive.google.com/file/d/1YyxAL9VCxPDqeEuLRlJm8lTMNx7F8unp/view"
+            },
+            "98765": {
+                name: "أحمد زيد",
+                level: "ثانية ثانوي – تقني",
+                grade: "7.80/20",
+                note: "للأسف، لم يتم تحقيق النجاح المطلوب. ستتم إعادة السنة الدراسية.",
+                noteClass: "fail",
+                pdfUrl: "https://drive.google.com/file/d/1DEnVxQHNPknFzunrCAVZVaJEUrLxUiRA/view"
+            },
+            "13579": {
+                name: "مريم الصغير",
+                level: "ثانية ثانوي – علوم تجريبية",
+                grade: "11.20/20",
+                note: "ألف مبروك! بالتوفيق للمستوى القادم.",
+                noteClass: "",
+                pdfUrl: "https://drive.google.com/file/d/1ed7H9NbgyXGdlVKM5wOCI9W7AYDrA6SR/view"
+            },
+            "24680": {
+                name: "خالد العمري",
+                level: "ثانية ثانوي – رياضيات",
+                grade: "8.95/20",
+                note: "للأسف، لم يتم تحقيق النجاح المطلوب. ستتم إعادة السنة الدراسية.",
+                noteClass: "fail",
                 pdfUrl: "https://drive.google.com/file/d/1YyxAL9VCxPDqeEuLRlJm8lTMNx7F8unp/view"
             }
         };
@@ -483,6 +535,10 @@
             } else {
                 alert("حدث خطأ: لم يتم العثور على رابط PDF لهذا الطالب!");
             }
+        }
+
+        function openVideo() {
+            window.location.href = "https://drive.google.com/file/d/1uGlX5p163O6yg5j7KGJjehklaYuwyrpS/view?usp=sharing";
         }
 
         // تهيئة الواجهة الأولى
